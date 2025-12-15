@@ -47,12 +47,26 @@
   services.displayManager.sddm.enable = true;
   services.displayManager.sddm.wayland.enable = true;
   
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia.prime.offload.enable = true;
+  # Optionally generate the offload wrapper:
+  hardware.nvidia.prime.enableOffloadCmd = true;
 
   hardware.graphics = {
     enable = true;
+    enable32Bit = true;
   };
 
-  virtualisation.virtualbox.guest.enable = true;
+  hardware.nvidia = {
+    nvidiaSettings = true;
+    modesetting.enable = true;
+    powerManagement.enable = false; 
+    powerManagement.finegrained = false;
+    open = false;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
+  boot.blacklistKernelModules = [ "nouveau" ];
 
   # Configure keymap in X11
   services.xserver.xkb.layout = "us";
@@ -99,6 +113,10 @@
     nano
     wget
     git
+
+    # Graphics
+    pciutils 
+    lshw
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -120,7 +138,8 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = true;
+  networking.firewall.backend = "nftables";
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
