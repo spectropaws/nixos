@@ -1,46 +1,60 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
+  imports = [
+    ./modules/hyprland
+    ./modules/programs
+    ./modules/services
+  ];
+
   home.username = "spectropaws";
   home.homeDirectory = "/home/spectropaws";
 
   home.packages = with pkgs; [
+    # Terminal
     kitty
-    dunst
+    
+    # File management
+    yazi # Terminal file manager
+    ranger # Alternative terminal file manager
+    
+    # System utilities
+    brightnessctl
+    playerctl
+    pamixer
+    pavucontrol
+    
+    # Screenshots
+    grim
+    slurp
+    swappy
+    
+    # Clipboard
+    wl-clipboard
+    cliphist
+    
+    # Network
     networkmanagerapplet
+    
+    # Notifications
     libnotify
+    dunst
+    
+    # Image viewer
+    imv
+    
+    # PDF viewer
+    zathura
+    
+    # Archives
+    file-roller
+    
+    # System monitoring
+    btop
+    
+    # Screenshots & screen recording
+    wf-recorder
   ];
-
-  wayland.windowManager.hyprland = {
-      enable = true;
-      package = null;
-      xwayland.enable = true;
-
-      settings = {
-        "$mod" = "SUPER";
-        "$terminal" = "kitty";
-        "$menu" = "rofi -show drun -show-icons";
-
-      monitor = ",preferred,auto,1";
-   
-      bind = [
-        "$mod, Return, exec, $terminal"
-	"$mod, Space, exec, $menu"
-	"$mod, Q, killactive,"
-	"$mod, M, exit,"
-      ];
-
-      extraConfig = ''
-        exec-once = waybar
-      '';
-    };
-  };
-
-  programs.waybar.enable = true;
- 
-  programs.rofi = {
-    enable = true;
-  };
 
   home.stateVersion = "25.11";
 }

@@ -2,12 +2,13 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ../../modules/system
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -45,13 +46,14 @@
 
   programs.hyprland = {
     enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     xwayland.enable = true;
-    withUWSM = true;
   };
 
   xdg.portal = {
     enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-hyprland ];
+    extraPortals = with pkgs; [ xdg-desktop-portal-hyprland xdg-desktop-portal-gtk ];
+    config.common.default = "*";
   };
 
   services.displayManager.sddm.enable = true;
@@ -103,16 +105,18 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.spectropaws = {
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
       tree
     ];
   };
 
-  programs.firefox.enable = true;
-
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
+    nerd-fonts.fira-code
+    noto-fonts
+    noto-fonts-emoji
+    font-awesome
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -121,8 +125,15 @@
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     nano
+    neovim
+    curl
     wget
     git
+    zip
+    unzip
+
+    # Browsers
+    brave
 
     # Graphics
     pciutils 
@@ -130,6 +141,21 @@
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.auto-optimise-store = true;
+
+  # Garbage Collection
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
+
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    package = pkgs.bluez;
+  };
+  services.blueman.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
