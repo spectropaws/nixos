@@ -43,14 +43,24 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  programs.hyprland.enable = true;
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+    withUWSM = true;
+  };
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [ xdg-desktop-portal-hyprland ];
+  };
+
   services.displayManager.sddm.enable = true;
   services.displayManager.sddm.wayland.enable = true;
   
   services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia.prime.offload.enable = true;
+  # hardware.nvidia.prime.offload.enable = true;
   # Optionally generate the offload wrapper:
-  hardware.nvidia.prime.enableOffloadCmd = true;
+  # hardware.nvidia.prime.enableOffloadCmd = true;
 
   hardware.graphics = {
     enable = true;
@@ -66,7 +76,7 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
-  boot.blacklistKernelModules = [ "nouveau" ];
+  # boot.blacklistKernelModules = [ "nouveau" ];
 
   # Configure keymap in X11
   services.xserver.xkb.layout = "us";
@@ -138,8 +148,8 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  networking.firewall.enable = true;
-  networking.firewall.backend = "nftables";
+  # networking.firewall.enable = true;
+  # networking.firewall.backend = "nftables";
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you

@@ -13,6 +13,9 @@
 
   wayland.windowManager.hyprland = {
       enable = true;
+      package = null;
+      xwayland.enable = true;
+
       settings = {
         "$mod" = "SUPER";
         "$terminal" = "kitty";
@@ -26,6 +29,10 @@
 	"$mod, Q, killactive,"
 	"$mod, M, exit,"
       ];
+
+      extraConfig = ''
+        exec-once = waybar
+      '';
     };
   };
 
