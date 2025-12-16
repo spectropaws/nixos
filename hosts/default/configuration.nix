@@ -115,7 +115,7 @@
     nerd-fonts.jetbrains-mono
     nerd-fonts.fira-code
     noto-fonts
-    noto-fonts-emoji
+    noto-fonts-color-emoji
     font-awesome
   ];
 
