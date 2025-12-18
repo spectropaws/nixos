@@ -138,6 +138,12 @@
     # Graphics
     pciutils 
     lshw
+
+    # File manager
+    nautilus
+    nautilus-open-any-terminal
+    code-nautilus
+    nautilus-python
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];

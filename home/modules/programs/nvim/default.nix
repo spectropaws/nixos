@@ -13,6 +13,9 @@
     ./plugins/none-ls.nix
     ./plugins/copilot.nix
     ./plugins/codium.nix
+    ./plugins/alpha.nix
+    ./plugins/bufferline.nix
+    ./plugins/lazygit.nix
   ];
   
   programs.neovim = {

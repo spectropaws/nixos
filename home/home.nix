@@ -58,6 +58,9 @@
     # Wallpaper
     swww
     hyprpaper
+
+    # Emoji
+    bemoji
   ];
 
   home.stateVersion = "25.11";

@@ -26,7 +26,7 @@
       # Variables
       "$mod" = "SUPER";
       "$terminal" = "kitty";
-      "$fileManager" = "thunar";
+      "$fileManager" = "nautilus";
       "$menu" = "rofi -show drun -show-icons";
 
       # Environment variables
@@ -115,7 +115,10 @@
         "suppressevent maximize, class:.*"
         "float, class:^(pavucontrol)$"
         "float, class:^(nm-connection-editor)$"
-        "float, class:^(thunar)$, title:^(File Operation Progress)$"
+        "float, class:(org.gnome.Nautilus), title:(File Operation Progress)"
+        "float, class:(org.gnome.Nautilus), title:(Confirm to replace files)"
+        "float, class:(org.gnome.Nautilus), title:(Properties)"
+	"float, title:(Open with...)"
       ];
 
       # Keybindings
@@ -125,6 +128,7 @@
         "$mod, E, exec, $fileManager"
         "$mod, Space, exec, $menu"
         "$mod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
+	"$mod, period, exec, bemoji -t"
         
         # Window management
         "$mod, Q, killactive"
