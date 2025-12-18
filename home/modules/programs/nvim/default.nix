@@ -48,6 +48,21 @@
       
       -- Keymaps
       vim.g.mapleader = " "
+
+      vim.api.nvim_create_autocmd("ColorScheme", {
+          pattern = "*",
+          callback = function()
+            -- 1. White Relative Line Numbers
+            -- "LineNr" is the current absolute line number
+            -- "LineNrAbove" and "LineNrBelow" are the relative ones
+            vim.api.nvim_set_hl(0, "LineNr", { fg = "#D0D0D0", bg = "NONE" })
+            vim.api.nvim_set_hl(0, "LineNrAbove", { fg = "#D0D0D0", bg = "NONE" })
+            vim.api.nvim_set_hl(0, "LineNrBelow", { fg = "#D0D0D0", bg = "NONE" })
+            
+            -- Optional: Make the current cursor line number bold and white too
+            vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#D0D0D0", bold = true, bg = "NONE" })
+	  end,
+      })
     '';
   };
 }

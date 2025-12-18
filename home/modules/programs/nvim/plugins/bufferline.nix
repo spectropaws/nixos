@@ -51,6 +51,16 @@
             modified = { bg = "NONE" },
             modified_selected = { bg = "NONE" },
             modified_visible = { bg = "NONE" },
+
+	    -- Duplicate File Paths (e.g., services/default.nix)
+            duplicate_selected = { bg = "NONE" },
+            duplicate_visible = { bg = "NONE" },
+            duplicate = { bg = "NONE" },
+
+            -- Pick Mode (If you use <leader>bp)
+            pick_selected = { bg = "NONE", bold = true },
+            pick_visible = { bg = "NONE" },
+            pick = { bg = "NONE" },
             
             -- Truncated markers
             trunc_marker = { bg = "NONE" },
@@ -60,6 +70,19 @@
           },
         })
         
+	-- white underline for bufferline
+	vim.api.nvim_create_autocmd("ColorScheme", {
+          pattern = "*",
+          callback = function()
+	  vim.api.nvim_set_hl(0, "BufferLineFill", { 
+                bg = "NONE", 
+                fg = "#D0D0D0", -- Color of the underline
+                underline = true, -- This draws the line
+                sp = "#D0D0D0" -- Special color (needed for underline in some GUIs)
+            })
+	  end,
+	})
+
         -- Keymaps
         vim.keymap.set('n', '<S-h>', ':BufferLineCyclePrev<CR>', { desc = "Go to previous buffer", silent = true })
         vim.keymap.set('n', '<S-l>', ':BufferLineCycleNext<CR>', { desc = "Go to next buffer", silent = true })
