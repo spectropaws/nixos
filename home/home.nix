@@ -54,6 +54,10 @@
     
     # Screenshots & screen recording
     wf-recorder
+
+    # Wallpaper
+    swww
+    hyprpaper
   ];
 
   home.stateVersion = "25.11";

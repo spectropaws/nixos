@@ -14,6 +14,9 @@
       background = "#1e1e2e";
       foreground = "#cdd6f4";
       
+      background_opacity = 0.6;
+      background_blur = 40;
+      
       # Cursor
       cursor = "#f5e0dc";
       cursor_text_color = "#1e1e2e";

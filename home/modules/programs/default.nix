@@ -6,5 +6,6 @@
     ./rofi.nix
     ./kitty.nix
     ./dunst.nix
+    ./nvim
   ];
 }

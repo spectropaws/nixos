@@ -13,11 +13,14 @@
 
       # Autostart
       exec-once = [
-        "waybar"
-        "dunst"
+	"dunst"
         "nm-applet --indicator"
         "wl-paste --type text --watch cliphist store"
         "wl-paste --type image --watch cliphist store"
+
+	# -- wallpaper setup --
+	"swww init"
+	"swww img /home/spectropaws/Downloads/wallpapers/wallhaven-w557rr.jpg"
       ];
 
       # Variables
@@ -62,10 +65,12 @@
         active_opacity = 1.0;
         inactive_opacity = 1.0;
         
-        drop_shadow = true;
-        shadow_range = 4;
-        shadow_render_power = 3;
-        "col.shadow" = "rgba(1a1a1aee)";
+        shadow = {
+          enabled = true;
+          range = 4;
+          render_power = 3;
+          color = "rgba(1a1a1aee)";
+	};
 
         blur = {
           enabled = true;
@@ -101,8 +106,8 @@
 
       # Misc
       misc = {
-        force_default_wallpaper = -1;
-        disable_hyprland_logo = false;
+        force_default_wallpaper = 0;
+        disable_hyprland_logo = true;
       };
 
       # Window rules

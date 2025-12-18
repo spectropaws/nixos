@@ -1,6 +1,10 @@
 { ... }:
 
 {
+  imports = [
+    ./swww.nix
+  ];
+
   # Enable home-manager services
   services = {
     # Clipboard manager
