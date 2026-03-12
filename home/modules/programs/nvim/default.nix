@@ -2,15 +2,15 @@
 {
   imports = [
     ./plugins/lsp.nix
-    ./plugins/cmp.nix
+    ./plugins/blink.nix
     ./plugins/treesitter.nix
-    ./plugins/colorschemes.nix
+    ./plugins/catppuccin.nix
     ./plugins/lualine.nix
     ./plugins/neo-tree.nix
     ./plugins/which-key.nix
     ./plugins/gitsigns.nix
     ./plugins/telescope.nix
-    ./plugins/none-ls.nix
+    ./plugins/conform.nix
     ./plugins/copilot.nix
     ./plugins/codium.nix
     ./plugins/alpha.nix
