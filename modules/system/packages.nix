@@ -11,6 +11,7 @@
     git
     zip
     unzip
+    fastfetch
 
     # Graphics
     pciutils 

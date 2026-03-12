@@ -1,18 +1,8 @@
-{ lib, pkgs, config, ... }:
+{ lib, pkgs, config, catppuccinPath, ... }:
 
 let
   hmDir = config.home.homeDirectory;
-  catppuccinPlugin = pkgs.tmuxPlugins.mkTmuxPlugin {
-    pluginName = "catppuccin";
-    version = "unstable";
-    src = pkgs.fetchFromGitHub {
-      owner = "catppuccin";
-      repo = "tmux";
-      rev = "main";
-      sha256 = "sha256-godCgBMgqzim+W3O2sHcgw91h7sHsKHjd02BdLuazZ8=";
-    };
-  };
-  statusModulePath = "${catppuccinPlugin}/share/tmux-plugins/catppuccin/utils/status_module.conf";
+  statusModulePath = "${catppuccinPath}/utils/status_module.conf";
 in
 {
   home.file = {

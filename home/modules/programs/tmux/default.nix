@@ -4,7 +4,6 @@
   imports = [
     ./keybindings.nix
     ./catppuccin.nix
-    ./custom_modules.nix
     ./statusbar.nix
     ./plugins
   ];

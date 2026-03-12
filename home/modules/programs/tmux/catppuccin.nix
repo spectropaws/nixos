@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, config, ... }:
 
 let
   catppuccinPlugin = pkgs.tmuxPlugins.mkTmuxPlugin {
@@ -11,8 +11,14 @@ let
       sha256 = "sha256-godCgBMgqzim+W3O2sHcgw91h7sHsKHjd02BdLuazZ8=";
     };
   };
+
+  catppuccinPath = "${catppuccinPlugin}/share/tmux-plugins/catppuccin";
 in
 {
+  imports = [
+      (import ./custom_modules.nix { inherit pkgs config lib catppuccinPath; })
+  ];
+  
   programs.tmux.extraConfig = ''
     # Catppuccin theme
     set -g @catppuccin_flavor "mocha"
