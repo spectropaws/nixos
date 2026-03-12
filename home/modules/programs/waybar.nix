@@ -1,5 +1,26 @@
 { config, pkgs, ... }:
-
+ let
+  gsettings = "${pkgs.glib}/bin/gsettings";
+  darkModeScript = pkgs.writeShellScript "toggle-darkmode" ''
+    current=$(${gsettings} get org.gnome.desktop.interface color-scheme)
+    if [ "$current" = "'prefer-dark'" ]; then
+      ${gsettings} set org.gnome.desktop.interface color-scheme 'prefer-light'
+      ${gsettings} set org.gnome.desktop.interface gtk-theme 'Adwaita'
+    else
+      ${gsettings} set org.gnome.desktop.interface color-scheme 'prefer-dark'
+      ${gsettings} set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+    fi
+  '';
+  darkModeStatus = pkgs.writeShellScript "darkmode-status" ''
+    if [ "$(${gsettings} get org.gnome.desktop.interface color-scheme)" = "'prefer-dark'" ]; then
+      # Echo the moon icon for dark mode
+      echo "" 
+    else
+      # Echo the sun icon for light mode
+      echo "" 
+    fi
+  '';
+in
 {
   programs.waybar = {
     enable = true;
@@ -14,7 +35,7 @@
 
         modules-left = [ "hyprland/workspaces" "hyprland/window" ];
         modules-center = [ "clock" ];
-        modules-right = [ "pulseaudio" "network" "cpu" "memory" "battery" "tray" ];
+        modules-right = [ "custom/darkmode" "pulseaudio" "network" "cpu" "memory" "battery" "tray" ];
 
         "hyprland/workspaces" = {
           format = "{icon}";
@@ -62,29 +83,32 @@
         };
 
         cpu = {
-          format = " {usage}%";
+          format = " {usage}%";
           tooltip = false;
+	  interval = 2;
         };
 
         memory = {
-          format = " {}%";
+          format = " {}%";
+	  interval = 2;
         };
 
         battery = {
+          interval = 10;
           states = {
             warning = 30;
             critical = 15;
           };
           format = "{icon} {capacity}%";
-          format-charging = " {capacity}%";
-          format-plugged = " {capacity}%";
+          format-charging = " {capacity}%";
+          format-plugged = " {capacity}%";
           format-alt = "{icon} {time}";
-          format-icons = [ "" "" "" "" "" ];
+          format-icons = [ "" "" "" "" "" ];
         };
 
         network = {
-          format-wifi = " {essid}";
-          format-ethernet = " wired";
+          format-wifi = "  {essid}";
+          format-ethernet = "  wired";
           format-disconnected = "⚠ Disconnected";
           tooltip-format = "{ifname} via {gwaddr}";
           tooltip-format-wifi = "{essid} ({signalStrength}%)";
@@ -92,18 +116,26 @@
         };
 
         pulseaudio = {
-          format = "{icon} {volume}%";
-          format-muted = " muted";
+          format = "{icon}  {volume}%";
+          format-muted = " muted";
           format-icons = {
-            headphone = "";
-            hands-free = "";
-            headset = "";
-            phone = "";
-            portable = "";
-            car = "";
-            default = [ "" "" "" ];
+            headphone = "";
+            hands-free = "";
+            headset = "";
+            phone = "";
+            portable = "";
+            car = "";
+            default = [ "" "" ]; 
           };
           on-click = "pavucontrol";
+        };
+
+	"custom/darkmode" = {
+          format = "{}";
+          exec = "${darkModeStatus}";
+          interval = 2;
+          on-click = "${darkModeScript}";
+          tooltip = false;
         };
 
         tray = {
@@ -116,7 +148,7 @@
       * {
         border: none;
         border-radius: 0;
-        font-family: "JetBrainsMono Nerd Font";
+        font-family: "JetBrainsMono Nerd Font", "Font Awesome 6 Free";
         font-size: 13px;
         min-height: 0;
       }
@@ -205,6 +237,12 @@
 
       #tray {
         padding: 0 5px;
+      }
+
+      #custom-darkmode {
+  	color: #f9e2af;
+  	padding: 0 10px;
+  	margin: 0 2px;
       }
     '';
   };
