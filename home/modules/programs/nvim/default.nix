@@ -32,7 +32,7 @@
       fd
     ];
     
-    extraLuaConfig = ''
+    initLua = ''
       -- Basic Settings
       vim.opt.expandtab = true
       vim.opt.tabstop = 4
