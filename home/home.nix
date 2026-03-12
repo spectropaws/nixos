@@ -25,9 +25,6 @@
   };
 
   home.packages = with pkgs; [
-    # Terminal
-    kitty
-    
     # File management
     yazi # Terminal file manager
     ranger # Alternative terminal file manager
@@ -52,13 +49,15 @@
     
     # Notifications
     libnotify
-    dunst
     
     # Image viewer
     imv
     
     # PDF viewer
     zathura
+
+    # Browsers
+    brave
     
     # Archives
     file-roller
@@ -70,7 +69,6 @@
     wf-recorder
 
     # Wallpaper
-    swww
     hyprpaper
 
     # Emoji

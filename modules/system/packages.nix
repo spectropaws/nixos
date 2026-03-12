@@ -1,0 +1,27 @@
+{ pkgs, ... }:
+
+{
+  # List packages installed in system profile.
+  # You can use https://search.nixos.org/ to find more packages (and options).
+  environment.systemPackages = with pkgs; [
+    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    nano
+    curl
+    wget
+    git
+    zip
+    unzip
+
+    # Graphics
+    pciutils 
+    lshw
+
+    # File manager
+    nautilus
+    nautilus-open-any-terminal
+    code-nautilus
+    nautilus-python
+  ];
+}
+
+
