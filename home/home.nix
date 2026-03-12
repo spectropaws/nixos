@@ -9,6 +9,20 @@
 
   home.username = "spectropaws";
   home.homeDirectory = "/home/spectropaws";
+  
+  gtk = {
+    enable = true;
+    theme = {
+      name = "Adwaita-dark";
+      package = pkgs.gnome-themes-extra;
+    };
+  };
+
+  qt = {
+    enable = true;
+    platformTheme.name = "gtk";
+    style.name = "adwaita-dark";
+  };
 
   home.packages = with pkgs; [
     # Terminal
