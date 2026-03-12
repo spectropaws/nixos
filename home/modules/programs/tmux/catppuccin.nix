@@ -1,18 +1,7 @@
 { lib, pkgs, config, ... }:
 
 let
-  catppuccinPlugin = pkgs.tmuxPlugins.mkTmuxPlugin {
-    pluginName = "catppuccin";
-    version = "unstable";
-    src = pkgs.fetchFromGitHub {
-      owner = "catppuccin";
-      repo = "tmux";
-      rev = "main";
-      sha256 = "sha256-godCgBMgqzim+W3O2sHcgw91h7sHsKHjd02BdLuazZ8=";
-    };
-  };
-
-  catppuccinPath = "${catppuccinPlugin}/share/tmux-plugins/catppuccin";
+  catppuccinPath = "${pkgs.tmuxPlugins.catppuccin}/share/tmux-plugins/catppuccin";
 in
 {
   imports = [
@@ -60,6 +49,6 @@ in
     set -g @catppuccin_window_current_right_separator "#[bg=default,fg=#{@thm_mauve}]#[bg=default,fg=#{@thm_mauve}]"
 
     # Must run BEFORE status bar modules
-    run-shell ${catppuccinPlugin}/share/tmux-plugins/catppuccin/catppuccin.tmux
+    run-shell ${catppuccinPath}/catppuccin.tmux
   '';
 }

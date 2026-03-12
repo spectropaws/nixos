@@ -2,13 +2,12 @@
 
 {
     programs.tmux.plugins = with pkgs.tmuxPlugins; [
-	( import ./nerd-font.nix {inherit pkgs;} )
-	( import ./sensible.nix {inherit pkgs;} )
-	( import ./resurrect.nix {inherit pkgs;} )
-	( import ./sessionx.nix {inherit pkgs;} )
-	( import ./which-key.nix {inherit pkgs;} )
-	( import ./cpu.nix {inherit pkgs;} )
-
+	cpu
+	resurrect
+	sensible
+	tmux-sessionx
+	tmux-which-key
+	catppuccin
     ];
 
     # Reload troublesome plugins again at the end

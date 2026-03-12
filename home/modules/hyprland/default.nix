@@ -128,7 +128,7 @@
         "$mod, E, exec, $fileManager"
         "$mod, Space, exec, $menu"
         "$mod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
-	"$mod, period, exec, bemoji -t"
+	"$mod, period, exec, bemoji -c"
         
         # Window management
         "$mod, Q, killactive"

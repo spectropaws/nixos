@@ -3,6 +3,7 @@
 {
   imports = [
     ./swww.nix
+    ./dunst.nix
   ];
 
   # Enable home-manager services

@@ -5,7 +5,7 @@
     ./keybindings.nix
     ./catppuccin.nix
     ./statusbar.nix
-    ./plugins
+    ./plugins.nix
   ];
 
   programs.tmux = {
