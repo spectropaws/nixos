@@ -8,147 +8,140 @@
     systemd.enable = true;
 
     settings = {
-      # Monitor configuration
       monitor = ",preferred,auto,1";
 
-      # Autostart
       exec-once = [
-	"dunst"
+        "dunst"
         "nm-applet --indicator"
         "wl-paste --type text --watch cliphist store"
         "wl-paste --type image --watch cliphist store"
-
-	# -- wallpaper setup --
-	"swww init"
-	"swww img /home/spectropaws/Downloads/wallpapers/wallhaven-w557rr.jpg"
+        "swww-daemon"
+        "swww img /home/spectropaws/Downloads/wallpapers/wallhaven-w557rr.jpg"
+        # propagate env vars to systemd so waybar/gsettings etc. work
+        # "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
       ];
 
-      # Variables
-      "$mod" = "SUPER";
-      "$terminal" = "kitty";
+      "$mod"         = "SUPER";
+      "$terminal"    = "kitty";
       "$fileManager" = "nautilus";
-      "$menu" = "rofi -show drun -show-icons";
+      "$menu"        = "rofi -show drun -show-icons";
 
-      # Environment variables
       env = [
         "XCURSOR_SIZE,24"
         "HYPRCURSOR_SIZE,24"
         "QT_QPA_PLATFORMTHEME,qt5ct"
       ];
 
-      # Input configuration
       input = {
-        kb_layout = "us";
+        kb_layout    = "us";
         follow_mouse = 1;
-        sensitivity = 0;
-        
-        touchpad = {
-          natural_scroll = true;
-        };
+        sensitivity  = 0;
+        touchpad.natural_scroll = true;
       };
 
-      # General settings
       general = {
-        gaps_in = 5;
+        gaps_in  = 5;
         gaps_out = 10;
         border_size = 2;
-        "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
+        "col.active_border"   = "rgba(33ccffee) rgba(00ff99ee) 45deg";
         "col.inactive_border" = "rgba(595959aa)";
         resize_on_border = false;
-        allow_tearing = false;
-        layout = "dwindle";
+        allow_tearing    = false;
+        layout           = "dwindle";
       };
 
-      # Decoration
       decoration = {
-        rounding = 10;
-        active_opacity = 1.0;
+        rounding         = 10;
+        active_opacity   = 1.0;
         inactive_opacity = 1.0;
-        
+
         shadow = {
-          enabled = true;
-          range = 4;
+          enabled      = true;
+          range        = 4;
           render_power = 3;
-          color = "rgba(1a1a1aee)";
-	};
+          color        = "rgba(1a1a1aee)";
+        };
 
         blur = {
-          enabled = true;
-          size = 3;
-          passes = 1;
-          vibrancy = 0.1696;
+          enabled   = true;
+          size      = 3;
+          passes    = 1;
+          vibrancy  = 0.1696;
         };
       };
 
-      # Animations
       animations = {
         enabled = true;
-        bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
+        bezier  = "myBezier, 0.05, 0.9, 0.1, 1.05";
         animation = [
-          "windows, 1, 7, myBezier"
-          "windowsOut, 1, 7, default, popin 80%"
-          "border, 1, 10, default"
-          "borderangle, 1, 8, default"
-          "fade, 1, 7, default"
-          "workspaces, 1, 6, default"
+          "windows,     1, 7, myBezier"
+          "windowsOut,  1, 7, default, popin 80%"
+          "border,      1, 10, default"
+          "borderangle, 1, 8,  default"
+          "fade,        1, 7,  default"
+          "workspaces,  1, 6,  default"
         ];
       };
 
-      # Layout
       dwindle = {
-        pseudotile = true;
+        pseudotile     = true;
         preserve_split = true;
       };
 
-      master = {
-        new_status = "master";
-      };
+      master.new_status = "master";
 
-      # Misc
       misc = {
         force_default_wallpaper = 0;
-        disable_hyprland_logo = true;
+        disable_hyprland_logo   = true;
       };
 
-      # Window rules
-      windowrulev2 = [
-        "suppressevent maximize, class:.*"
-        "float, class:^(pavucontrol)$"
-        "float, class:^(nm-connection-editor)$"
-        "float, class:(org.gnome.Nautilus), title:(File Operation Progress)"
-        "float, class:(org.gnome.Nautilus), title:(Confirm to replace files)"
-        "float, class:(org.gnome.Nautilus), title:(Properties)"
-	"float, title:(Open with...)"
+      # ── Window rules (0.48+ syntax) ──────────────────────────────
+      # windowrulev2 is fully deprecated as of 0.53.0
+      # new syntax: windowrule = <rule> on, match:class <regex>
+      # multiple rules can be chained on one line per match
+      windowrule = [
+        # suppress unwanted maximize requests from all windows
+        "match:class .*, suppress_event maximize"
+
+        # float specific apps
+        "float on, match:class ^(pavucontrol)$"
+        "float on, match:class ^(nm-connection-editor)$"
+
+        # Nautilus dialogs — group with named rule for clarity
+        "float on, match:class ^(org\\.gnome\\.Nautilus)$, match:title ^(File Operation Progress)$"
+        "float on, match:class ^(org\\.gnome\\.Nautilus)$, match:title ^(Confirm to replace files)$"
+        "float on, match:class ^(org\\.gnome\\.Nautilus)$, match:title ^(Properties)$"
+
+        # generic "Open with..." dialogs
+        "float on, match:title ^(Open with\\.\\.\\.)$"
       ];
 
-      # Keybindings
+      # ── Keybindings ──────────────────────────────────────────────
       bind = [
-        # Applications
-        "$mod, Return, exec, $terminal"
-        "$mod, E, exec, $fileManager"
-        "$mod, Space, exec, $menu"
-        "$mod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
-	"$mod, period, exec, bemoji -c"
-        
-        # Window management
+        "$mod, Return,  exec, $terminal"
+        "$mod, E,       exec, $fileManager"
+        "$mod, Space,   exec, $menu"
+        "$mod, V,       exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
+        "$mod, period,  exec, bemoji -c"
+        "$mod, Escape, exec, powermenu"
+
+
         "$mod, Q, killactive"
         "$mod, M, exit"
         "$mod, F, fullscreen"
         "$mod, T, togglefloating"
         "$mod, P, pseudo"
-        "$mod, J, togglesplit"
+        "$mod, J, layoutmsg, togglesplit"
 
-        # Move focus
-        "$mod, left, movefocus, l"
+        "$mod, left,  movefocus, l"
         "$mod, right, movefocus, r"
-        "$mod, up, movefocus, u"
-        "$mod, down, movefocus, d"
-        "$mod, h, movefocus, l"
-        "$mod, l, movefocus, r"
-        "$mod, k, movefocus, u"
-        "$mod, j, movefocus, d"
+        "$mod, up,    movefocus, u"
+        "$mod, down,  movefocus, d"
+        "$mod, h,     movefocus, l"
+        "$mod, l,     movefocus, r"
+        "$mod, k,     movefocus, u"
+        "$mod, j,     movefocus, d"
 
-        # Switch workspaces
         "$mod, 1, workspace, 1"
         "$mod, 2, workspace, 2"
         "$mod, 3, workspace, 3"
@@ -160,7 +153,6 @@
         "$mod, 9, workspace, 9"
         "$mod, 0, workspace, 10"
 
-        # Move window to workspace
         "$mod SHIFT, 1, movetoworkspace, 1"
         "$mod SHIFT, 2, movetoworkspace, 2"
         "$mod SHIFT, 3, movetoworkspace, 3"
@@ -172,38 +164,33 @@
         "$mod SHIFT, 9, movetoworkspace, 9"
         "$mod SHIFT, 0, movetoworkspace, 10"
 
-        # Special workspace (scratchpad)
-        "$mod, S, togglespecialworkspace, magic"
+        "$mod, S,       togglespecialworkspace, magic"
         "$mod SHIFT, S, movetoworkspace, special:magic"
 
-        # Scroll through workspaces
         "$mod, mouse_down, workspace, e+1"
-        "$mod, mouse_up, workspace, e-1"
+        "$mod, mouse_up,   workspace, e-1"
 
-        # Screenshots
-        ", Print, exec, grim -g \"$(slurp)\" - | swappy -f -"
-        "SHIFT, Print, exec, grim - | swappy -f -"
+        ''  , Print,       exec, grim -g "$(slurp)" - | swappy -f -''
+        ''SHIFT, Print,    exec, grim - | swappy -f -''
       ];
 
-      # Mouse bindings
       bindm = [
         "$mod, mouse:272, movewindow"
         "$mod, mouse:273, resizewindow"
       ];
 
-      # Media keys
       bindl = [
-        ", XF86AudioMute, exec, pamixer -t"
-        ", XF86AudioPlay, exec, playerctl play-pause"
-        ", XF86AudioNext, exec, playerctl next"
-        ", XF86AudioPrev, exec, playerctl previous"
+        ", XF86AudioMute,  exec, pamixer -t"
+        ", XF86AudioPlay,  exec, playerctl play-pause"
+        ", XF86AudioNext,  exec, playerctl next"
+        ", XF86AudioPrev,  exec, playerctl previous"
       ];
 
       bindle = [
-        ", XF86AudioRaiseVolume, exec, pamixer -i 5"
-        ", XF86AudioLowerVolume, exec, pamixer -d 5"
-        ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
-        ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
+        ", XF86AudioRaiseVolume,   exec, pamixer -i 5"
+        ", XF86AudioLowerVolume,   exec, pamixer -d 5"
+        ", XF86MonBrightnessUp,    exec, brightnessctl set 5%+"
+        ", XF86MonBrightnessDown,  exec, brightnessctl set 5%-"
       ];
     };
   };
