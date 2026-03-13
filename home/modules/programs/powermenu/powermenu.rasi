@@ -1,0 +1,102 @@
+* {
+    bg:         #1e1e2e;
+    bg-alt:     #181825;
+    fg:         #cdd6f4;
+    fg-alt:     #6c7086;
+    accent:     #cba6f7;
+    accent-alt: #89b4fa;
+    urgent:     #f38ba8;
+
+    background-color: transparent;
+    text-color:       @fg;
+    font:             "JetBrainsMono Nerd Font 12";
+}
+
+configuration {
+    show-icons:   false;
+    hover-select: true;
+    me-select-entry: "";
+    me-accept-entry: "MousePrimary";
+}
+
+window {
+    width:            360px;
+    background-color: @bg;
+    border:           2px solid;
+    border-color:     @accent;
+    border-radius:    16px;
+}
+
+mainbox {
+    children:    [ inputbar, message, listview ];
+    spacing:     0px;
+    padding:     20px;
+}
+
+/* Header — shows username */
+inputbar {
+    children:         [ prompt ];
+    background-color: transparent;
+    padding:          12px 0px 4px 0px;
+}
+
+prompt {
+    background-color: transparent;
+    text-color:       @accent;
+    font:             "JetBrainsMono Nerd Font Bold 16";
+    horizontal-align: 0.5;
+}
+
+/* Date/time message */
+message {
+    padding:          0px 0px 16px 0px;
+    background-color: transparent;
+}
+
+textbox {
+    background-color: transparent;
+    text-color:       @fg-alt;
+    horizontal-align: 0.5;
+    font:             "JetBrainsMono Nerd Font 10";
+}
+
+/* Separator line */
+listview {
+    columns:     1;
+    lines:       6;
+    spacing:     4px;
+    background-color: transparent;
+    border:      1px solid;
+    border-color: @fg-alt;
+    border-radius: 10px;
+    padding:     8px;
+}
+
+element {
+    padding:          10px 16px;
+    background-color: transparent;
+    text-color:       @fg;
+    border-radius:    8px;
+    spacing:          12px;
+}
+
+element selected {
+    background-color: @accent;
+    text-color:       @bg;
+}
+
+element-text {
+    background-color: transparent;
+    text-color:       inherit;
+    vertical-align:   0.5;
+}
+
+/* Make shutdown/reboot red on hover */
+element.urgent {
+    text-color: @urgent;
+}
+
+element.urgent selected {
+    background-color: @urgent;
+    text-color:       @bg;
+}

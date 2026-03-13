@@ -35,7 +35,7 @@ in
 
         modules-left = [ "hyprland/workspaces" "hyprland/window" ];
         modules-center = [ "clock" ];
-        modules-right = [ "custom/darkmode" "pulseaudio" "network" "cpu" "memory" "battery" "tray" ];
+        modules-right = [ "custom/darkmode" "pulseaudio" "network" "cpu" "memory" "battery" "tray" "custom/powermenu" ];
 
         "hyprland/workspaces" = {
           format = "{icon}";
@@ -130,11 +130,17 @@ in
           on-click = "pavucontrol";
         };
 
-	"custom/darkmode" = {
+	    "custom/darkmode" = {
           format = "{}";
           exec = "${darkModeStatus}";
           interval = 2;
           on-click = "${darkModeScript}";
+          tooltip = false;
+        };
+
+        "custom/powermenu" = {
+          format = "⏻";
+          on-click = "powermenu";
           tooltip = false;
         };
 
